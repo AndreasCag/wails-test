@@ -31,6 +31,7 @@
     "node-sass": "^4.5.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "passport-local-register": "^1.0.4",
     "passport-remember-me-extended": "0.0.3",
     "path-to-regexp": "^1.7.0",
     "progress-bar-webpack-plugin": "^1.9.3",
