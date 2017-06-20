@@ -1,0 +1,16 @@
+# Dotfiles
+
+.* text eol=lf
+
+# Source
+
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.vue text eol=lf
+*.json text eol=lf
+*.ejs text eol=lf
+
+# Text and documentation
+
+*.md text eol=lf

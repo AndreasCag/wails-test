@@ -1,0 +1,259 @@
+<template>
+  <div :id="APP_ID" class="site">
+
+    <header>
+      <div class="main-nav-container">
+        <div class="container">
+          <div class="main-nav">
+            <router-link to="/">
+              <div class="main-nav-a-helper">
+                <p>
+                  О нас
+                </p>
+              </div>
+            </router-link>
+            <router-link to="/admin">
+                  Админ панель
+            </router-link>
+          </div>
+        </div>
+      </div>
+      <div v-if="!isAuthenticated">
+        <form>
+          <input type="text" v-model="usernameLogin">
+          <input type="text" v-model="passwordLogin">
+          <input type="submit" @click.prevent="submitSignIn" value="Log in">
+        </form>
+        <br>
+        <form>
+          <input type="text" v-model="usernameRegister">
+          <input type="text" v-model="passwordRegister">
+          <input type="submit" @click.prevent="submitRegister" value="Register">
+        </form>
+      </div>
+      <div v-else>
+        <h1>{{user.username}}</h1>
+        <form>
+          <input type="submit" @click.prevent="submitSignOut" value="Sign Out">
+        </form>
+      </div>
+    </header>
+
+    <main class="site-content">
+      <router-view></router-view>
+    </main>
+
+
+    <footer>
+      Created and maintained by <a href="https://vk.com/id89465511">Andrew Anikin</a>.
+
+    </footer>
+  </div>
+</template>
+
+<script>
+  var utils = require('@/utils');
+
+  module.exports = {
+
+    name: 'DefaultLayout',
+
+    data: function () {
+      return {
+        APP_ID: process.env.APP_ID, // @IMPORTANT
+        usernameLogin: '',
+        passwordLogin: '',
+        usernameRegister: '',
+        passwordRegister: '',
+      };
+    },
+
+    computed: utils.merge([
+      Vuex.mapGetters('auth', {
+        inProgress: 'inProgress',
+        isAuthenticated: 'isAuthenticated',
+        user: 'user',
+      }),
+    ]),
+
+    methods: utils.merge([
+      Vuex.mapActions('auth', {
+        doLogin: 'login',
+        doLogout: 'logout',
+        doRegister: 'register',
+      }),
+      {
+        submitSignIn: function () {
+          this.doLogin({username: this.usernameLogin, password: this.passwordLogin})
+            .catch(console.warn);
+        },
+        submitSignOut: function () {
+          this.doLogout()
+            .catch(console.warn);
+        },
+        submitRegister: function () {
+          this.doRegister({username: this.usernameRegister, password: this.passwordRegister})
+            .catch(console.warn);
+        },
+      },
+    ]),
+
+  };
+</script>
+
+<style lang="scss">
+
+  .router-link-exact-active {
+    font-size:3em;
+  }
+
+  $sm: 768px;
+  $md: 992px;
+  $lg: 1200px;
+
+  @mixin font-sizer($size) {
+    font-size: $size;
+
+    @media (max-width: $lg) {
+      font-size: $size*0.8;
+    }
+    @media (max-width: $md) {
+      font-size: $size*0.7;
+    }
+    @media (max-width: $sm) {
+      font-size: $size*0.6;
+    }
+  }
+
+  $main-nav-bgc: #c6d8d3;
+  $main-nav-button-bgc: #eb5e55;
+  $main-nav-button-color: #fdf0d5;
+  $main-nav-about-border: 2px solid #393e41;
+  $main-nav-about-hover-color: #fdf0d5;
+  $main-nav-about-color: #162a43;
+  $main-nav-login-color: #000000;
+
+  .site {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .site-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .error-container {
+    background-color: #442b48;
+  }
+
+  header {
+    flex-grow: 0;
+  }
+
+  footer {
+    flex-grow: 0;
+    background: #404040;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    color: #999;
+    a {
+      color: #9098a4;
+      font-weight: 800;
+    }
+  }
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  a {
+    text-decoration: none;
+    &:focus {
+      text-decoration: none;
+    }
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .main-nav {
+    width: 100%;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0;
+    padding-top: 0;
+    .main-nav-a {
+      padding-left: 20px;
+      padding-right: 20px;
+      align-self: stretch;
+      margin-top: 0;
+      vertical-align: middle;
+      .main-nav-a-helper {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        p {
+          font-weight: 400;
+
+          @include font-sizer(3em);
+
+          border-bottom: $main-nav-about-border;
+          color: $main-nav-about-color;
+        }
+      }
+      transition: background-color 1s;
+
+      &:hover {
+        background-color: $main-nav-about-hover-color;
+      }
+    }
+
+    .main-nav-login {
+
+      color: $main-nav-login-color;
+      font-weight: 600;
+    }
+  }
+
+  .main-nav-button {
+
+    color: $main-nav-button-color;
+    background-color: $main-nav-button-bgc;
+    font-weight: 600;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-color: transparent;
+    border-radius: 4px;
+    padding: 10px 20px 10px 20px;
+  }
+
+  .main-nav-container {
+    background-color: $main-nav-bgc;
+    margin-bottom: 0;
+  }
+
+  .helper-popup {
+    float: right;
+    font-size: 2em;
+  }
+
+  .error-container {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    div {
+      margin-bottom: 0;
+    }
+  }
+
+
+</style>

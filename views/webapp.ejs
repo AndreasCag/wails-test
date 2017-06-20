@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <!-- @SECTION: metainfo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <% if (context.helmet) { %>
+
+      <% if (context.helmet.title != null) { %>
+        <title><%= context.helmet.title %></title>
+      <% } %>
+
+      <% if (context.helmet.canonical != null) { %>
+        <link rel="canonical" href="<%= context.helmet.canonical %>">
+      <% } %>
+
+      <% if (context.helmet.meta != null) { %>
+        <% context.helmet.meta.forEach(function(item) { %>
+          <meta name="<%= item.name %>" content="<%= item.content %>">
+        <% }); %>
+      <% } %>
+
+    <% } %>
+
+    <!-- @SECTION: cdn styles -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+
+    <!-- @SECTION: client styles -->
+    <% if (context.includeStyles != null) { %>
+      <% context.includeStyles.forEach(function(item) { %>
+        <link href="<%= item %>" rel="stylesheet" type="text/css">
+      <% }); %>
+    <% } %>
+
+    <!-- @SECTION: component styles -->
+    <%- context.styles %>
+
+    <!-- @SECTION: cdn scripts -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+
+    <% if (context.initialState != null) { %>
+      <!-- @SECTION: initial state for vuex -->
+      <!-- @TODO: proper escaping, e.g. https://www.npmjs.com/package/serialize-javascript -->
+      <script>window.__INITIAL_STATE__ = <%- JSON.stringify(context.initialState) %>;</script>
+    <% } %>
+
+    <% if (context.routeDataCache != null) { %>
+      <!-- @SECTION: initial state for vuex -->
+      <!-- @TODO: proper serialization, e.g. errors -->
+      <!-- @TODO: proper escaping, e.g. https://www.npmjs.com/package/serialize-javascript -->
+      <script>window.__ROUTE_DATA_CACHE__ = <%- JSON.stringify(context.routeDataCache) %>;</script>
+    <% } %>
+
+  </head>
+  <body>
+
+    <!-- @SECTION: prerendered app body -->
+    <%- context.body %>
+
+    <!-- @SECTION: client scripts -->
+    <% if (context.includeScripts != null) { %>
+      <% context.includeScripts.forEach(function(item) { %>
+        <script src="<%= item %>"></script>
+      <% }); %>
+    <% } %>
+
+  </body>
+</html>

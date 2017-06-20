@@ -1,0 +1,23 @@
+.attention {
+  background-color: #ffaaaa; }
+
+
+
+.admin-color-container {
+  background-color: #fdf0d5;
+  flex-grow: 1; }
+  .admin-color-container .admin-container {
+    max-width: 500px !important; }
+    .admin-color-container .admin-container h1 {
+      font-size: 2.5em; }
+      @media (max-width: 1200px) {
+        .admin-color-container .admin-container h1 {
+          font-size: 2em; } }
+      @media (max-width: 992px) {
+        .admin-color-container .admin-container h1 {
+          font-size: 1.75em; } }
+      @media (max-width: 768px) {
+        .admin-color-container .admin-container h1 {
+          font-size: 1.5em; } }
+
+/*# sourceMappingURL=admin.css.map */

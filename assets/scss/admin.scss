@@ -1,0 +1,17 @@
+@import 'default';
+
+.attention {
+	background-color: #ffaaaa;
+}
+
+.admin-color-container{
+  background-color: #fdf0d5;
+  flex-grow:1;
+  .admin-container {
+    max-width: 500px !important;
+      h1 {
+        @include font-sizer(2.5em);
+      }
+  }
+}
+
